@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Paulo Henrique">
+  <title>Login - Sistema OS</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="empresa-login-page">
+
+  <main class="empresa-login-layout">
+    <section class="empresa-login-marca">
+      <div class="empresa-login-overlay"></div>
+
+      <div class="empresa-login-marca-conteudo">
+        <img 
+          src="../assets/img/logo.png" 
+          alt="Logo Sistema OS" 
+          class="empresa-login-logo"
+        >
+
+        <h1><span class="marca-primaria">Sistema</span> <span class="marca-destaque">OS</span></h1>
+        <p>Gestão de Manutenção</p>
+
+        <div class="empresa-login-detalhe">
+          <span>Ambiente de demonstração para portfólio.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="empresa-login-acesso">
+      <div class="empresa-login-card">
+        <div class="empresa-login-topo">
+          <h2>Bem-vindo</h2>
+          <p>Entre com seu usuário e senha para continuar.</p>
+        </div>
+
+        <form id="form-login" class="empresa-login-form" novalidate>
+          <div class="form-group">
+            <label for="usuario">Usuário</label>
+            <input 
+              type="text" 
+              id="usuario" 
+              placeholder="Digite seu usuário"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input 
+              type="password" 
+              id="senha" 
+              placeholder="Digite sua senha"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <button type="submit" class="empresa-login-botao">
+            Entrar
+          </button>
+        </form>
+
+        <section id="demo-acesso" class="demo-login-box" hidden>
+          <p class="demo-login-titulo">Acesso rápido (Modo Demonstração)</p>
+          <div class="demo-login-grid">
+            <button type="button" class="demo-perfil-btn" data-demo-perfil="admin">Administrador</button>
+            <button type="button" class="demo-perfil-btn" data-demo-perfil="manutentor">Manutentor</button>
+            <button type="button" class="demo-perfil-btn" data-demo-perfil="lider">Líder</button>
+            <button type="button" class="demo-perfil-btn" data-demo-perfil="almoxarifado">Almoxarifado</button>
+          </div>
+          <small class="demo-login-aviso">Somente leitura: consultas, PDF e Excel liberados.</small>
+        </section>
+
+        <div class="empresa-login-rodape">
+          <p>&copy; Sistema OS</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/modal.js"></script>
+  <script src="../js/login.js"></script>
+  <script>
+      redirecionarSeJaLogado();
+      mostrarMensagemNoLogin();
+  </script>
+</body>
+</html>

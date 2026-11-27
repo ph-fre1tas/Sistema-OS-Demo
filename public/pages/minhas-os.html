@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Minhas OS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">    
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="manutentor-page" data-minhas-os="true">
+    <main class="app-layout">
+        <aside class="sidebar">
+            <button 
+            type="button" 
+            class="btn-fechar-menu" 
+            onclick="fecharMenuMobile()"
+            aria-label="Fechar menu"
+        >
+            &times;
+        </button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div>
+                    <h2>Manutenção</h2>
+                    <p>Sistema de Manutenção</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider" class="ativo">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar">
+                <button 
+                    type="button" 
+                    class="btn-menu-mobile" 
+                    onclick="abrirMenuMobile()"
+                    aria-label="Abrir menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Minhas OS</h1>
+                    <p>Acompanhe as ordens de serviço pendentes que você criou.</p>
+                </div>
+
+                <div class="topbar-user">
+                    <span><i class="fa-solid fa-screwdriver-wrench"></i></span>
+                    <div>
+                        <strong>Líder</strong>
+                        <small>Atualização automática</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="admin-resumo painel-resumo">
+                <article class="resumo-card">
+                    <span>Total</span>
+                    <strong id="totalOSAbertas">0</strong>
+                    <p>OS em aberto</p>
+                </article>
+
+                <article class="resumo-card alerta">
+                    <span>Urgentes</span>
+                    <strong id="totalUrgentes">0</strong>
+                    <p>Prioridade alta</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Abertas</span>
+                    <strong id="totalAbertas">0</strong>
+                    <p>Aguardando início</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Em andamento</span>
+                    <strong id="totalAndamento">0</strong>
+                    <p>OS iniciadas</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Aguardando peça</span>
+                    <strong id="totalAguardando">0</strong>
+                    <p>Paradas por peça</p>
+                </article>
+                <article class="resumo-card">
+                    <span>Pausadas</span>
+                    <strong id="totalPausadas">0</strong>
+                    <p>Outros motivos de pausa</p>
+                </article>
+            </section>
+
+            <section class="dashboard-panel historico-filtros-panel">
+                <div class="section-title">
+                    <h2>Filtrar minhas OS</h2>
+                    <p>Use os filtros abaixo para encontrar ordens específicas no painel.</p>
+                </div>
+
+                <form id="form-filtros-painel" class="historico-form">
+                    <div class="form-group campo-busca-historico">
+                        <label for="busca-painel">Busca</label>
+                        <input
+                            type="text"
+                            id="busca-painel"
+                            placeholder="Pesquisar por número da OS, máquina, setor, problema..."
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status-painel">Status</label>
+                        <select id="status-painel">
+                            <option value="Todos">Todos os status</option>
+                            <option value="Aberta">Abertas</option>
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Aguardando peça">Aguardando peça</option>
+                            <option value="Pausada">Pausadas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area-painel">Área da manutenção</label>
+                        <select id="area-painel">
+                            <option value="Todas">Todas as áreas</option>
+                            <option value="Máquinas">Máquinas</option>
+                            <option value="Máquinas de costura">Máquinas de costura</option>
+                            <option value="Manutenção Civil">Manutenção Civil</option>
+                            <option value="Metalúrgica">Metalúrgica</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-inicio-painel">De</label>
+                        <input type="date" id="data-inicio-painel">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-fim-painel">Até</label>
+                        <input type="date" id="data-fim-painel">
+                    </div>
+
+                    <div class="historico-acoes-filtro">
+                        <button type="submit" class="btn-principal">Pesquisar</button>
+                        <button type="button" id="btn-limpar-filtros-painel" class="btn-secundario">Limpar</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="dashboard-panel">
+                <div class="section-title">
+                    <h2>Minhas ordens pendentes</h2>
+                    <p>Urgentes aparecem primeiro. O painel atualiza automaticamente.</p>
+                </div>
+
+                <div id="lista-os-abertas" class="lista-os-dashboard">
+                    <p>Carregando minhas OS...</p>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        permitirPagina(["lider"]);
+        ajustarMenuPorPerfil();
+    </script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/os-pdf-download.js"></script>
+    <script src="../js/os-card-detalhes.js"></script>
+    <script src="../js/manutentor.js"></script>
+
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+    <script src="../js/periodo.js"></script>
+</body>
+</html>

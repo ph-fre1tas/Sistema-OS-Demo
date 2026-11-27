@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Criar Ordem de Serviço</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="criar-os-page">
+    <main class="app-layout">
+        <aside class="sidebar">
+        <button 
+            type="button" 
+            class="btn-fechar-menu" 
+            onclick="fecharMenuMobile()"
+            aria-label="Fechar menu"
+        >
+            &times;
+        </button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div>
+                    <h2>Nova OS</h2>
+                    <p>Sistema de Manutenção</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor" class="ativo">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+            </nav>
+
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar">
+                <button 
+                    type="button" 
+                    class="btn-menu-mobile" 
+                    onclick="abrirMenuMobile()"
+                    aria-label="Abrir menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Criar Ordem de Serviço</h1>
+                    <p>Registre uma nova solicitação para a equipe de manutenção.</p>
+                </div>
+
+                <div class="topbar-user">
+                    <span><i class="fa-solid fa-clipboard-list"></i></span>
+                    <div>
+                        <strong>Solicitação</strong>
+                        <small>Nova ordem de serviço</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="criar-os-layout">
+                <section class="dashboard-panel criar-os-panel">
+                    <div class="section-title">
+                        <h2>Dados da solicitação</h2>
+                        <p>Preencha os campos abaixo para abrir uma nova ordem de serviço.</p>
+                    </div>
+
+                    <form id="form-os" class="criar-os-form" novalidate>
+                        <div class="criar-os-form-grid">
+                            <div class="form-group">
+                                <label for="solicitante">Solicitante</label>
+                                <input 
+                                    type="text" 
+                                    name="solicitante" 
+                                    id="solicitante" 
+                                    required 
+                                    placeholder="Nome do solicitante"
+                                >
+                            </div>
+
+                            <div class="form-group" data-seletor-os>
+                                <label for="setor">Setor</label>
+                                <input type="hidden" name="setor" id="setor" required>
+                                <div class="seletor-os-controle">
+                                    <button id="setorBotao" class="seletor-os-botao" type="button" aria-expanded="false" aria-controls="setorMenu"><span>Selecione...</span><i aria-hidden="true"></i></button>
+                                    <div id="setorMenu" class="seletor-os-menu" role="group" aria-label="Setores" hidden></div>
+                                </div>
+                                <div id="grupoSetorOutro" class="form-group" hidden><label for="setorOutro">Informe o setor</label><input id="setorOutro" type="text" maxlength="120" placeholder="Digite o setor" disabled></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="maquina">Máquina</label>
+                                <input 
+                                    type="text" 
+                                    name="maquina" 
+                                    id="maquina" 
+                                    required 
+                                    placeholder="Ex: Plaina"
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="maquina_id">ID da Máquina</label>
+                                <input 
+                                    type="text" 
+                                    name="maquina_id" 
+                                    id="maquina_id" 
+                                    placeholder="Ex: 1"
+                                >
+                            </div>
+
+                            <div class="form-group campo-grande">
+                                <label for="problema">Problema</label>
+                                <textarea 
+                                    name="problema" 
+                                    id="problema" 
+                                    required 
+                                    placeholder="Descreva o problema encontrado..."
+                                ></textarea>
+                            </div>
+
+                            <div class="form-group campo-seletor-os" data-seletor-os>
+                                <label id="area-manutencao-rotulo" for="area_manutencaoBotao">Área da manutenção</label>
+                                <input type="hidden" name="area_manutencao" id="area_manutencao" required>
+                                <div class="seletor-os-controle">
+                                    <button id="area_manutencaoBotao" class="seletor-os-botao" type="button" aria-expanded="false" aria-controls="area_manutencaoMenu"><span>Selecione...</span><i aria-hidden="true"></i></button>
+                                    <div id="area_manutencaoMenu" class="seletor-os-menu" role="group" aria-labelledby="area-manutencao-rotulo" hidden></div>
+                                </div>
+                                <small class="area-manutencao-ajuda">Selecione a área responsável pelo serviço. A descrição aparecerá conforme a opção escolhida.</small>
+                                <div id="descricao-area-manutencao" class="area-manutencao-descricao" role="status" aria-live="polite" hidden>
+                                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                                    <div><strong></strong><p></p></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group campo-seletor-os campo-prioridade" data-seletor-os>
+                                <label id="prioridade-rotulo" for="prioridadeBotao">Prioridade</label>
+                                <input type="hidden" name="prioridade" id="prioridade" required>
+                                <div class="seletor-os-controle">
+                                    <button id="prioridadeBotao" class="seletor-os-botao" type="button" aria-expanded="false" aria-controls="prioridadeMenu"><span>Selecione...</span><i aria-hidden="true"></i></button>
+                                    <div id="prioridadeMenu" class="seletor-os-menu" role="group" aria-labelledby="prioridade-rotulo" hidden></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criar-os-acoes">
+                            <button type="submit" class="btn-principal">Criar OS</button>
+                        </div>
+                    </form>
+                </section>
+
+                <aside class="painel-orientacoes">
+                    <div class="section-title">
+                        <h2>Orientações</h2>
+                        <p>Antes de abrir a OS, confira:</p>
+                    </div>
+
+                    <ul>
+                        <li>Informe o setor correto.</li>
+                        <li>Descreva o problema com clareza.</li>
+                        <li>Use prioridade urgente somente quando a parada for crítica.</li>
+                        <li>O ID da máquina pode ficar vazio se não existir.</li>
+                    </ul>
+                </aside>
+            </section>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        permitirPagina(["admin", "almoxarifado", "lider", "manutentor"]);
+        ajustarMenuPorPerfil();
+    </script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/os-seletor.js"></script>
+    <script src="../js/criar-os.js"></script>
+
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+</body>
+</html>

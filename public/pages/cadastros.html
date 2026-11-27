@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Cadastros</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="ferramentas-page"><main class="app-layout">
+        <aside class="sidebar">
+            <button type="button" class="btn-fechar-menu" onclick="fecharMenuMobile()" aria-label="Fechar menu">&times;</button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div><h2>Cadastros</h2><p>Sistema de Manutenção</p></div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado" class="ativo">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas" class="ativo">Máquinas</a>
+            </nav>
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+<section class="app-content">
+<header class="topbar relatorios-topbar cadastros-topbar">
+<button type="button" class="btn-menu-mobile" onclick="abrirMenuMobile()" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+<div><h1>Cadastros</h1><p id="descricaoAbaCadastro">Ferramentas</p></div>
+<div class="relatorios-seletor cadastros-seletor" role="tablist" aria-label="Tipo de cadastro" data-aba="ferramentas">
+<span class="relatorios-seletor-fundo" aria-hidden="true"></span>
+<button type="button" id="abaCadastroFerramentas" role="tab" aria-selected="true" aria-controls="painelCadastroFerramentas" tabindex="0" data-acesso="gestao">Ferramentas</button>
+<button type="button" id="abaCadastroMaquinas" role="tab" aria-selected="false" aria-controls="painelCadastroMaquinas" tabindex="-1">Máquinas</button>
+</div>
+<div class="topbar-user"><span><i class="fa-solid fa-toolbox"></i></span><div><strong>Cadastros</strong><small>Sistema de Manutenção</small></div></div>
+</header>
+
+<section id="painelCadastroFerramentas" role="tabpanel" aria-labelledby="abaCadastroFerramentas" class="relatorios-painel-aba" data-acesso="gestao">
+<p id="mensagemFerramentas" class="ferramentas-mensagem" role="status" hidden></p>
+<section class="admin-panel">
+<div class="section-title"><h2 id="tituloCadastro">Cadastrar ferramenta</h2><p>Cadastre cada unidade separadamente, mesmo quando tipo e marca forem iguais.</p></div>
+<form id="formFerramenta" class="ferramentas-form ferramentas-cadastro-form">
+<div class="form-group"><label for="numeroFerramenta">Número de identificação</label><input id="numeroFerramenta" value="Gerado ao cadastrar" readonly></div>
+<div class="form-group"><label for="tipoFerramenta">Tipo</label><input id="tipoFerramenta" maxlength="100" required placeholder="Ex.: Parafusadeira"></div>
+<div class="form-group"><label for="marcaFerramenta">Marca</label><input id="marcaFerramenta" maxlength="100" required placeholder="Ex.: Bosch"></div>
+<div class="ferramentas-acoes"><button type="submit" id="salvarFerramenta" class="btn-principal">Cadastrar ferramenta</button></div>
+</form></section>
+<section class="admin-panel ferramentas-lista">
+<div class="ferramentas-topo"><div class="section-title"><h2>Ferramentas cadastradas</h2><p>Consulte as unidades e edite o tipo ou a marca.</p></div>
+<div class="form-group"><label for="buscaFerramenta">Buscar ferramenta</label><input type="search" id="buscaFerramenta" placeholder="Número, tipo ou marca"></div></div>
+<div class="estoque-tabela-wrap"><table class="estoque-tabela"><thead><tr><th scope="col">Número</th><th scope="col">Tipo</th><th scope="col">Marca</th><th scope="col">Situação</th><th scope="col">Ação</th></tr></thead><tbody id="listaFerramentas"><tr><td colspan="5" class="estado-tabela">Carregando ferramentas...</td></tr></tbody></table></div>
+</section>
+</section>
+
+<section id="painelCadastroMaquinas" role="tabpanel" aria-labelledby="abaCadastroMaquinas" class="relatorios-painel-aba" hidden>
+<p id="mensagemMaquinas" class="ferramentas-mensagem" role="status" hidden></p>
+<section id="formularioMaquinaPainel" class="admin-panel" hidden>
+<div class="section-title"><h2 id="tituloFormularioMaquina">Cadastrar máquina</h2><p>O ID é informado manualmente e deve ser único. Campos marca e modelo são opcionais.</p></div>
+<form id="formMaquina" class="maquinas-form">
+<div class="form-group"><label for="codigoMaquina">ID da máquina</label><input id="codigoMaquina" maxlength="60" required></div>
+<div class="form-group"><label for="nomeMaquina">Nome</label><input id="nomeMaquina" maxlength="160" required placeholder="Ex.: Máquina de corte 1"></div>
+<div class="form-group"><label for="setorMaquina">Setor</label><input id="setorMaquina" maxlength="120"></div>
+<div class="form-group"><label for="marcaMaquina">Marca <span>(opcional)</span></label><input id="marcaMaquina" maxlength="100"></div>
+<div class="form-group"><label for="modeloMaquina">Modelo <span>(opcional)</span></label><input id="modeloMaquina" maxlength="100"></div>
+<div class="form-group maquinas-form-largo"><label for="fotoMaquina">Nome do arquivo da foto</label><input id="fotoMaquina" maxlength="255" placeholder="exemplo.jpg"><small>Adicione a imagem manualmente à pasta public/assets/maquinas e informe somente o nome do arquivo.</small></div>
+<div class="form-group maquinas-form-largo"><label for="observacoesMaquina">Observações</label><textarea id="observacoesMaquina" maxlength="4000" rows="3"></textarea></div>
+<div class="ferramentas-acoes maquinas-form-largo"><button type="button" id="cancelarMaquina" class="btn-secundario">Cancelar</button><button type="submit" id="salvarMaquina" class="btn-principal">Cadastrar máquina</button></div>
+</form></section>
+<section class="admin-panel ferramentas-lista">
+<div class="ferramentas-topo"><div class="section-title"><h2>Máquinas cadastradas</h2><p>Abra uma máquina para consultar os detalhes e o histórico.</p></div>
+<div class="maquinas-lista-acoes"><div class="form-group"><label for="buscaMaquina">Buscar máquina</label><input type="search" id="buscaMaquina" placeholder="ID, nome, modelo ou marca"></div><button type="button" id="novaMaquina" class="btn-principal" hidden>Adicionar máquina</button></div></div>
+<div class="estoque-tabela-wrap"><table class="estoque-tabela"><thead><tr><th scope="col">ID</th><th scope="col">Nome</th><th scope="col">Modelo</th><th scope="col">Marca</th><th scope="col">Ação</th></tr></thead><tbody id="listaMaquinas"><tr><td colspan="5" class="estado-tabela">Carregando máquinas...</td></tr></tbody></table></div>
+</section>
+</section>
+</section></main>
+<script src="../js/auth.js"></script>
+<script>permitirPagina(["admin", "almoxarifado", "manutentor"]); ajustarMenuPorPerfil();</script>
+<script>
+const perfilCadastro = verificarLogin()?.perfil;
+if (perfilCadastro === "manutentor") {
+    document.querySelectorAll('[data-acesso="gestao"]').forEach(elemento => elemento.hidden = true);
+    document.getElementById("painelCadastroMaquinas").hidden = false;
+    document.querySelector(".cadastros-seletor").hidden = true;
+    document.getElementById("descricaoAbaCadastro").textContent = "Máquinas";
+}
+</script>
+<script src="../js/modal.js"></script>
+<script src="../js/ferramentas-api.js"></script>
+<script src="../js/cadastros-ferramentas.js"></script>
+<script src="../js/cadastros-maquinas.js"></script>
+<script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+</body></html>

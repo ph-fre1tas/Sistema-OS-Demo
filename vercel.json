@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "node_modules/pdfkit/js/standard-fonts/**/*"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/pages/login",
+      "permanent": false
+    },
+    {
+      "source": "/login.html",
+      "destination": "/pages/login",
+      "permanent": false
+    },
+    {
+      "source": "/criar-os.html",
+      "destination": "/pages/criar-os",
+      "permanent": false
+    },
+    {
+      "source": "/painel-manutentor",
+      "destination": "/pages/painel-manutentor",
+      "permanent": false
+    },
+    {
+      "source": "/os-concluidas",
+      "destination": "/pages/os-concluidas",
+      "permanent": false
+    },
+    {
+      "source": "/admin",
+      "destination": "/pages/admin",
+      "permanent": false
+    }
+  ]
+}

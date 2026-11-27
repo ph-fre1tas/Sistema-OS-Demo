@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Pedido de Compra</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="pedido-compra-page">
+    <main class="app-layout">
+        <aside class="sidebar">
+            <button type="button" class="btn-fechar-menu" onclick="fecharMenuMobile()" aria-label="Fechar menu">&times;</button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div><h2>Pedido de Compra</h2><p>Sistema de Manutenção</p></div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras" class="ativo">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar">
+                <button type="button" class="btn-menu-mobile" onclick="abrirMenuMobile()" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+                <div><h1>Pedido de Compra</h1><p>Selecione os produtos que precisam de reposição.</p></div>
+                <div class="topbar-user"><span><i class="fa-solid fa-cart-shopping"></i></span><div><strong>Compras</strong><small>Reposição de estoque</small></div></div>
+            </header>
+
+            <section class="admin-panel pedido-filtros">
+                <div class="form-group pedido-visualizacao"><label for="visualizacaoPedido">Visualizar</label><select id="visualizacaoPedido"><option value="falta" selected>Apenas itens em falta</option><option value="todos">Todos os produtos</option></select></div>
+                <div class="form-group pedido-fornecedor"><label for="fornecedorPedido">Fornecedor</label><div class="pedido-fornecedor-controle"><select id="fornecedorPedido"><option value="">Selecione um fornecedor</option></select><input id="novoFornecedor" type="text" maxlength="120" placeholder="Digite um novo fornecedor"><button id="adicionarFornecedor" type="button" class="btn-secundario">Adicionar</button></div><small id="mensagemFornecedor" class="pedido-fornecedor-mensagem" aria-live="polite"></small></div>
+                <div class="form-group pedido-busca"><label for="buscaPedido">Pesquisar produtos</label><input id="buscaPedido" type="search" placeholder="Digite o nome do produto"></div>
+            </section>
+
+            <section class="pedido-compra-layout">
+                <aside class="admin-panel pedido-atual-panel" aria-labelledby="tituloPedidoAtual">
+                    <div class="pedido-atual-cabecalho"><div><h2 id="tituloPedidoAtual">Pedido Atual</h2><p>Itens selecionados para compra.</p></div><span id="totalItensPedido" class="pedido-contador">0</span></div>
+                    <div id="pedidoAtualLista" class="pedido-atual-lista" tabindex="0" role="region" aria-label="Itens do pedido atual"><p class="estado-tabela">Nenhum produto selecionado.</p></div>
+                    <div class="pedido-atual-acoes">
+                        <button id="limparPedido" type="button" class="btn-secundario"><i class="fa-solid fa-eraser"></i> Limpar Pedido</button>
+                        <button id="gerarExcel" type="button" class="btn-principal" disabled><i class="fa-solid fa-file-excel"></i> Gerar Excel</button>
+                        <button id="gerarPdfPedido" type="button" class="btn-principal" disabled><i class="fa-solid fa-file-pdf"></i> Gerar PDF</button>
+                    </div>
+                </aside>
+
+                <section class="admin-panel pedido-produtos-panel">
+                    <div class="section-title"><h2>Produtos para reposição</h2><p>Exibindo apenas itens abaixo do estoque mínimo.</p></div>
+                    <div class="pedido-tabela-wrap" tabindex="0" role="region" aria-label="Produtos para o pedido de compra">
+                        <table class="pedido-tabela">
+                            <thead><tr><th scope="col">Selecionar</th><th scope="col">Produto</th><th scope="col">Estoque atual</th><th scope="col">Estoque mínimo</th><th scope="col">Comprar</th></tr></thead>
+                            <tbody id="listaProdutosCompra"><tr><td colspan="5" class="estado-tabela">Carregando produtos...</td></tr></tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </section>
+        </section>
+    </main>
+    <script src="../js/auth.js"></script>
+    <script>permitirPagina(["admin", "almoxarifado", "compras"]); ajustarMenuPorPerfil();</script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/estoque-api.js"></script>
+    <script src="../js/pedido-compra.js"></script>
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+</body>
+</html>

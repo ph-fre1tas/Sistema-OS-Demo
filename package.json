@@ -1,0 +1,36 @@
+{
+  "name": "sistema-os",
+  "version": "1.0.0",
+  "description": "Sistema de Manutenção para ordens de serviço.",
+  "main": "api/index.js",
+  "scripts": {
+    "dev": "node api/index.js",
+    "start": "node api/index.js",
+    "test": "node --test",
+    "seed:demo": "node scripts/seed-demo.js"
+  },
+  "keywords": [
+    "ordem-de-servico",
+    "manutencao",
+    "node",
+    "express",
+    "postgresql"
+  ],
+  "author": "Paulo Henrique",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^10.0.0",
+    "pdfkit": "^0.20.2",
+    "pg": "^8.21.0"
+  }
+}

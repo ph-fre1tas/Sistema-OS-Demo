@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Histórico de Ordens de Serviço</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="historico-page">
+    <main class="app-layout">
+        <aside class="sidebar">
+            <button 
+            type="button" 
+            class="btn-fechar-menu" 
+            onclick="fecharMenuMobile()"
+            aria-label="Fechar menu"
+        >
+            &times;
+        </button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div>
+                    <h2>Histórico</h2>
+                    <p>Sistema de Manutenção</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor" class="ativo">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar">
+                <button 
+                    type="button" 
+                    class="btn-menu-mobile" 
+                    onclick="abrirMenuMobile()"
+                    aria-label="Abrir menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Histórico de Ordens de Serviço</h1>
+                    <p>Consulte ordens concluídas e canceladas com filtros por busca, status e período.</p>
+                </div>
+
+                <div class="topbar-user">
+                    <span><i class="fa-solid fa-clock-rotate-left"></i></span>
+                    <div>
+                        <strong>Histórico</strong>
+                        <small>Consulta de OS</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="admin-resumo historico-resumo">
+                <article class="resumo-card">
+                    <span>Total</span>
+                    <strong id="totalHistorico">0</strong>
+                    <p>Registros encontrados</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Concluídas</span>
+                    <strong id="totalConcluidas">0</strong>
+                    <p>OS finalizadas</p>
+                </article>
+
+                <article class="resumo-card alerta">
+                    <span>Canceladas</span>
+                    <strong id="totalCanceladas">0</strong>
+                    <p>OS canceladas</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Urgentes</span>
+                    <strong id="totalUrgentesHistorico">0</strong>
+                    <p>Prioridade urgente</p>
+                </article>
+
+            </section>
+
+            <section class="dashboard-panel historico-filtros-panel">
+                <div class="section-title">
+                    <h2>Pesquisar histórico</h2>
+                    <p>Use os filtros abaixo para encontrar ordens específicas.</p>
+                </div>
+
+                <form id="form-filtros-historico" class="historico-form">
+                    <div class="form-group campo-busca-historico">
+                        <label for="busca-historico">Busca</label>
+                        <input 
+                            type="text" 
+                            id="busca-historico" 
+                            placeholder="Pesquisar por solicitante, máquina, setor, problema..."
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status-historico">Status</label>
+                        <select id="status-historico">
+                            <option value="Todos">Todos os status</option>
+                            <option value="Concluída">Concluídas</option>
+                            <option value="Cancelada">Canceladas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area-historico">Área da manutenção</label>
+                        <select id="area-historico">
+                            <option value="Todas">Todas as áreas</option>
+                            <option value="Máquinas">Máquinas</option>
+                            <option value="Máquinas de costura">Máquinas de costura</option>
+                            <option value="Manutenção Civil">Manutenção Civil</option>
+                            <option value="Metalúrgica">Metalúrgica</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-inicio-historico">De</label>
+                        <input type="date" id="data-inicio-historico">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data-fim-historico">Até</label>
+                        <input type="date" id="data-fim-historico">
+                    </div>
+
+                    <div class="historico-acoes-filtro">
+                        <button type="submit" class="btn-principal">Pesquisar</button>
+                        <button type="button" id="btn-limpar-filtros" class="btn-secundario">Limpar</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="dashboard-panel">
+                <div class="section-title">
+                    <h2>Resultado da consulta</h2>
+                    <p>As ordens mais recentes aparecem primeiro.</p>
+                </div>
+
+                <div id="lista-os-concluidas" class="lista-os-dashboard">
+                    <div class="estado-vazio historico-carregando" role="status" aria-live="polite">
+                        <span class="loading-bolinha" aria-hidden="true"></span>
+                        <span>Carregando OS concluídas...</span>
+                    </div>
+                </div>
+                <div class="historico-paginacao" id="historico-paginacao" aria-label="Paginação do histórico" hidden>
+                    <button type="button" id="historico-anterior" class="historico-paginacao-seta" aria-label="Página anterior" title="Página anterior">&#8249;</button>
+                    <div id="historico-paginas" class="historico-paginas" aria-label="Páginas do histórico"></div>
+                    <button type="button" id="historico-proxima" class="historico-paginacao-seta" aria-label="Próxima página" title="Próxima página">&#8250;</button>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        permitirPagina(["admin", "almoxarifado", "lider", "manutentor"]);
+        ajustarMenuPorPerfil();
+    </script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/os-pdf-download.js"></script>
+    <script src="../js/os-card-detalhes.js"></script>
+    <script src="../js/concluidas.js"></script>
+
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+    <script src="../js/periodo.js"></script>
+</body>
+</html>

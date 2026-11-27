@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Ferramentas</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="ferramentas-page"><main class="app-layout">
+        <aside class="sidebar">
+            <button type="button" class="btn-fechar-menu" onclick="fecharMenuMobile()" aria-label="Fechar menu">&times;</button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div><h2>Ferramentas</h2><p>Sistema de Manutenção</p></div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado" class="ativo">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+<section class="app-content">
+<header class="topbar relatorios-topbar">
+<button type="button" class="btn-menu-mobile" onclick="abrirMenuMobile()" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+<div><h1>Ferramentas</h1><p>Controle as retiradas e devoluções do almoxarifado.</p></div>
+<div class="relatorios-seletor" role="tablist" aria-label="Controle de ferramentas" data-aba="retiradas">
+<span class="relatorios-seletor-fundo" aria-hidden="true"></span>
+<button type="button" id="abaRetiradas" role="tab" aria-selected="true" aria-controls="painelRetiradas" tabindex="0">Retiradas e devoluções</button>
+<button type="button" id="abaHistorico" role="tab" aria-selected="false" aria-controls="painelHistorico" tabindex="-1">Histórico</button></div>
+<div class="topbar-user"><span><i class="fa-solid fa-toolbox"></i></span><div><strong>Ferramentas</strong><small>Sistema de Manutenção</small></div></div>
+</header>
+<p id="mensagemFerramentas" class="ferramentas-mensagem" role="status" hidden></p>
+<div id="painelRetiradas" role="tabpanel" aria-labelledby="abaRetiradas">
+<section class="admin-panel">
+<div class="section-title"><h2>Registrar retirada</h2><p>Selecione uma ferramenta disponível e quem vai utilizá-la.</p></div>
+<form id="formRetirada" class="ferramentas-form">
+<div class="form-group ferramentas-seletor"><label id="ferramentaRetiradaRotulo" for="ferramentaRetiradaBotao">Ferramenta</label>
+<input id="ferramentaRetirada" type="hidden">
+<button id="ferramentaRetiradaBotao" class="estoque-recebedor-botao ferramentas-seletor-botao" type="button" aria-expanded="false" aria-controls="ferramentaRetiradaMenu" disabled><span>Carregando...</span><i class="ferramentas-seta" aria-hidden="true"></i></button>
+<div id="ferramentaRetiradaMenu" class="estoque-recebedor-menu" hidden>
+<input type="search" placeholder="Buscar por número, tipo ou marca" aria-label="Buscar por número, tipo ou marca" autocomplete="off">
+<p class="ferramentas-seletor-estado" role="status" hidden></p>
+<div class="estoque-recebedor-opcoes" role="group" aria-labelledby="ferramentaRetiradaRotulo"></div>
+</div></div>
+<div class="form-group ferramentas-seletor"><label id="funcionarioRetiradaRotulo" for="funcionarioRetiradaBotao">Funcionário</label>
+<input id="funcionarioRetirada" type="hidden">
+<button id="funcionarioRetiradaBotao" class="estoque-recebedor-botao ferramentas-seletor-botao" type="button" aria-expanded="false" aria-controls="funcionarioRetiradaMenu" disabled><span>Carregando...</span><i class="ferramentas-seta" aria-hidden="true"></i></button>
+<div id="funcionarioRetiradaMenu" class="estoque-recebedor-menu" hidden>
+<input type="search" placeholder="Buscar funcionário por nome" aria-label="Buscar funcionário por nome" autocomplete="off">
+<p class="ferramentas-seletor-estado" role="status" hidden></p>
+<div class="estoque-recebedor-opcoes" role="group" aria-labelledby="funcionarioRetiradaRotulo"></div>
+</div></div>
+<button type="submit" id="registrarRetirada" class="btn-principal" disabled>Registrar retirada</button>
+<div class="form-group ferramentas-outro" id="grupoOutroFuncionario" hidden><label for="outroFuncionarioNome">Nome de quem retirou (Nome e Sobrenome)</label><input id="outroFuncionarioNome" maxlength="120" disabled></div>
+</form></section>
+<section class="admin-panel ferramentas-lista">
+<div class="ferramentas-topo"><div class="section-title"><h2>Ferramentas emprestadas</h2><p>Confirme a devolução quando a ferramenta retornar ao almoxarifado.</p></div><button type="button" id="tentarNovamenteFerramentas" class="btn-secundario" hidden>Tentar novamente</button></div>
+<div class="estoque-tabela-wrap"><table class="estoque-tabela"><thead><tr><th scope="col">Ferramenta</th><th scope="col">Funcionário</th><th scope="col">Retirada</th><th scope="col">Ação</th></tr></thead><tbody id="listaEmprestimos"><tr><td colspan="4" class="estado-tabela">Carregando empréstimos...</td></tr></tbody></table></div>
+</section></div>
+<div id="painelHistorico" role="tabpanel" aria-labelledby="abaHistorico" hidden>
+<section class="admin-panel">
+<div class="section-title"><h2>Histórico de ferramentas</h2><p>Empréstimos concluídos. O período considera a data da retirada.</p></div>
+<form id="formHistorico" class="ferramentas-form ferramentas-filtros">
+<div class="form-group"><label for="buscaHistorico">Ferramenta ou funcionário</label><input id="buscaHistorico" type="search" maxlength="120" placeholder="Número, tipo, marca ou nome"></div>
+<div class="form-group"><label for="inicioHistorico">Retirada a partir de</label><input id="inicioHistorico" type="date"></div>
+<div class="form-group"><label for="fimHistorico">Retirada até</label><input id="fimHistorico" type="date"></div>
+<button type="submit" class="btn-principal">Pesquisar</button></form>
+<div class="estoque-tabela-wrap ferramentas-lista"><table class="estoque-tabela"><thead><tr><th scope="col">Ferramenta</th><th scope="col">Funcionário</th><th scope="col">Retirada</th><th scope="col">Devolução</th></tr></thead><tbody id="listaHistorico"></tbody></table></div>
+<div class="relatorios-paginacao"><button type="button" id="historicoAnterior" class="btn-secundario" disabled>Anterior</button><span id="paginaHistorico" role="status"></span><button type="button" id="historicoProxima" class="btn-secundario" disabled>Próxima</button></div>
+</section></div>
+</section></main>
+<script src="../js/auth.js"></script>
+<script>permitirPagina(["admin", "almoxarifado"]); ajustarMenuPorPerfil();</script>
+<script src="../js/modal.js"></script>
+<script src="../js/ferramentas-api.js"></script>
+<script src="../js/ferramentas-seletor.js"></script>
+<script src="../js/ferramentas.js"></script>
+<script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+    <script src="../js/periodo.js"></script>
+</body></html>

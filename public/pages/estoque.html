@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Controle de Estoque</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="estoque-page">
+    <main class="app-layout">
+        <aside class="sidebar">
+            <button type="button" class="btn-fechar-menu" onclick="fecharMenuMobile()" aria-label="Fechar menu">&times;</button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div><h2>Estoque</h2><p>Sistema de Manutenção</p></div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras" class="ativo">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar">
+                <button type="button" class="btn-menu-mobile" onclick="abrirMenuMobile()" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+                <div><h1>Controle de Estoque</h1><p>Acompanhe peças, insumos e movimentações da manutenção.</p></div>
+                <div class="topbar-user"><span><i class="fa-solid fa-boxes-stacked"></i></span><div><strong>Estoque</strong><small>Atualização em tempo real</small></div></div>
+            </header>
+
+            <section class="admin-resumo estoque-resumo">
+                <article class="resumo-card"><span>Produtos</span><strong id="totalProdutos">0</strong><p>Itens cadastrados</p></article>
+                <article class="resumo-card"><span>Com saldo</span><strong id="produtosComSaldo">0</strong><p>Produtos disponíveis</p></article>
+                <article class="resumo-card alerta"><span>Estoque baixo</span><strong id="produtosBaixos">0</strong><p>Exigem reposição</p></article>
+                <article class="resumo-card"><span>Saldo total</span><strong id="saldoTotal">0</strong><p>Unidades em estoque</p></article>
+            </section>
+
+            <section class="estoque-layout">
+                <section class="admin-panel estoque-cadastro" id="painelCadastro">
+                    <div class="section-title"><h2>Novo produto</h2><p>Cadastre itens que serão usados nas manutenções.</p></div>
+                    <form id="formProduto" class="estoque-form">
+                        <div class="form-group campo-grande"><label for="descricaoProduto">Descrição do produto</label><input id="descricaoProduto" maxlength="160" required placeholder="Ex.: Correia transportadora A-42"></div>
+                        <div class="form-group"><label for="unidadeProduto">Unidade</label><select id="unidadeProduto" required><option value="UNIDADE">Unidade</option><option value="METRO">Metro</option><option value="PACOTE">Pacote</option><option value="QUILO">Quilo</option><option value="LITRO">Litro</option><option value="KIT">Kit</option></select></div>
+                        <div class="form-group"><label for="minimoProduto">Estoque mínimo</label><input id="minimoProduto" type="number" min="0" step="1" value="0" required></div>
+                        <button type="submit" class="btn-principal"><i class="fa-solid fa-plus"></i> Cadastrar produto</button>
+                    </form>
+                </section>
+                <aside class="painel-orientacoes estoque-orientacoes">
+                    <div class="section-title"><h2>Como funciona</h2><p>Um controle simples para a rotina.</p></div>
+                    <ul><li><strong>Entrada</strong> adiciona material ao saldo.</li><li><strong>Saída</strong> registra o uso da peça na manutenção.</li><li>Itens abaixo do mínimo aparecem destacados para reposição.</li><li>O consumo mensal considera as saídas dos últimos 180 dias.</li></ul>
+                </aside>
+            </section>
+
+            <section class="admin-panel estoque-lista-panel">
+                    <div class="estoque-lista-topo">
+                        <div class="section-title"><h2>Produtos em estoque</h2><p>Consulte saldo, consumo e previsão de duração.</p></div>
+                    <div class="estoque-filtros"><label class="sr-only" for="buscaProduto">Buscar produtos</label><input id="buscaProduto" type="search" placeholder="Buscar produto ou unidade"><button id="exportarCsv" type="button" class="btn-secundario"><i class="fa-solid fa-file-export"></i> Exportar CSV</button></div>
+                    </div>
+                <p id="alertaEstoque" class="estoque-alerta" hidden></p>
+                <div class="estoque-tabela-wrap"><table class="estoque-tabela"><thead><tr><th>Produto</th><th>Unidade</th><th>Saldo</th><th>Mínimo</th><th>Consumo/mês</th><th>Dias restantes</th><th>Ações</th></tr></thead><tbody id="listaProdutos"><tr><td colspan="7" class="estado-tabela">Carregando produtos...</td></tr></tbody></table></div>
+                <button id="alternarProdutosEstoque" type="button" class="btn-secundario estoque-ver-mais" aria-expanded="false" hidden>Ver mais produtos</button>
+            </section>
+
+            <section class="admin-panel estoque-historico-panel">
+                <div class="section-title"><h2>Últimas movimentações</h2><p>Registro das últimas 20 entradas e saídas.</p></div>
+                <div id="listaMovimentacoes" class="estoque-movimentacoes" tabindex="0" role="region" aria-label="Últimas movimentações do estoque"><p class="estado-tabela">Carregando movimentações...</p></div>
+            </section>
+        </section>
+    </main>
+    <script src="../js/auth.js"></script>
+    <script>permitirPagina(["admin", "almoxarifado", "compras"]); ajustarMenuPorPerfil();</script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/estoque-api.js"></script>
+    <script src="../js/estoque.js"></script>
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+</body>
+</html>

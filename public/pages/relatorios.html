@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Relatórios</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="relatorios-page">
+    <main class="app-layout">
+        <aside class="sidebar">
+            <button type="button" class="btn-fechar-menu" onclick="fecharMenuMobile()" aria-label="Fechar menu">&times;</button>
+
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div>
+                    <h2>Relatórios</h2>
+                    <p>Sistema de Manutenção</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras" class="ativo">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar relatorios-topbar">
+                <button type="button" class="btn-menu-mobile" onclick="abrirMenuMobile()" aria-label="Abrir menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Relatórios</h1>
+                    <p>Consulte ordens de serviço e retiradas do estoque.</p>
+                </div>
+
+                <div class="relatorios-seletor" role="tablist" aria-label="Tipo de relatório" data-aba="os">
+                    <span class="relatorios-seletor-fundo" aria-hidden="true"></span>
+                    <button type="button" id="aba-relatorios-os" role="tab" aria-selected="true" aria-controls="painel-filtros-os" tabindex="0">Ordens de serviço</button>
+                    <button type="button" id="aba-relatorios-estoque" role="tab" aria-selected="false" aria-controls="painel-filtros-estoque" tabindex="-1">Retiradas do estoque</button>
+                </div>
+
+                <div class="topbar-user">
+                    <span><i class="fa-solid fa-file-lines"></i></span>
+                    <div>
+                        <strong>Relatórios</strong>
+                        <small>Consultas do sistema</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-panel relatorios-filtros-panel">
+
+                <div id="painel-filtros-os" role="tabpanel" aria-labelledby="aba-relatorios-os" class="relatorios-painel-aba">
+                <div class="section-title">
+                    <h2>Consultar ordens de serviço</h2>
+                    <p>Os resultados exibidos serão a fonte de dados do PDF coletivo.</p>
+                </div>
+
+                <form id="form-relatorios" class="relatorios-form" novalidate>
+                    <fieldset class="relatorios-status-campo">
+                        <legend>Status</legend>
+                        <div class="relatorios-status-opcoes">
+                            <label><input type="checkbox" name="status-relatorio" value="Todas" checked> Todas</label>
+                            <label><input type="checkbox" name="status-relatorio" value="Concluída"> Concluídas</label>
+                            <label><input type="checkbox" name="status-relatorio" value="Em andamento"> Em andamento</label>
+                            <label><input type="checkbox" name="status-relatorio" value="Pausada"> Pausadas</label>
+                            <label><input type="checkbox" name="status-relatorio" value="Aguardando peça"> Aguardando peça</label>
+                            <label><input type="checkbox" name="status-relatorio" value="Aberta"> Abertas / não iniciadas</label>
+                            <label><input type="checkbox" name="status-relatorio" value="Cancelada"> Canceladas</label>
+                        </div>
+                    </fieldset>
+
+                    <div class="relatorios-filtros-grid">
+                        <div class="form-group relatorios-busca">
+                            <label for="busca-relatorio">Pesquisar nas ordens</label>
+                            <input
+                                type="search"
+                                id="busca-relatorio"
+                                maxlength="120"
+                                autocomplete="off"
+                                placeholder="Máquina, ID, setor, solicitante, manutentor ou nº da OS"
+                            >
+                            <small>Status e prioridade são definidos pelos filtros próprios.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data-referencia-relatorio">Data de referência</label>
+                            <select id="data-referencia-relatorio" required>
+                                <option value="criacao">Criação</option>
+                                <option value="inicio">Início</option>
+                                <option value="conclusao">Conclusão</option>
+                                <option value="cancelamento">Cancelamento</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data-inicio-relatorio">Data inicial</label>
+                            <input type="date" id="data-inicio-relatorio">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data-fim-relatorio">Data final</label>
+                            <input type="date" id="data-fim-relatorio">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prioridade-relatorio">Prioridade</label>
+                            <select id="prioridade-relatorio">
+                                <option value="Todas">Todas as prioridades</option>
+                                <option value="Urgente">Urgente</option>
+                                <option value="Normal">Normal</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" id="btn-consultar-relatorio" class="btn-principal">
+                            <i class="fa-solid fa-magnifying-glass"></i> Consultar
+                        </button>
+                    </div>
+                </form>
+
+                <p id="mensagem-relatorios" class="relatorios-mensagem" role="status" aria-live="polite"></p>
+                </div>
+                <div id="painel-filtros-estoque" role="tabpanel" aria-labelledby="aba-relatorios-estoque" class="relatorios-painel-aba" hidden>
+                    <div class="section-title"><h2>Consultar retiradas do estoque</h2><p>Consulte as saídas com recebedor identificado por período e situação.</p></div>
+                    <form id="form-retiradas" class="relatorios-form">
+                        <div class="relatorios-filtros-grid relatorios-retiradas-grid">
+                            <div class="form-group relatorios-busca"><label for="busca-retiradas">Pesquisar nas retiradas</label><input id="busca-retiradas" type="search" maxlength="120" autocomplete="off" placeholder="Produto, quem retirou ou para quem foi retirado"></div>
+                            <div class="form-group"><label for="data-inicio-retiradas">Data inicial</label><input id="data-inicio-retiradas" type="date"></div>
+                            <div class="form-group"><label for="data-fim-retiradas">Data final</label><input id="data-fim-retiradas" type="date"></div>
+                            <div class="form-group"><label for="situacao-retiradas">Situação</label><select id="situacao-retiradas"><option value="confirmadas">Confirmadas</option><option value="canceladas">Canceladas</option><option value="todas">Todas</option></select></div>
+                            <button type="submit" id="btn-consultar-retiradas" class="btn-principal"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
+                        </div>
+                    </form>
+                    <p id="mensagem-retiradas" class="relatorios-mensagem" role="status" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <div id="conteudo-resultados-os">
+            <section id="resultado-relatorios" class="relatorios-resultados" hidden>
+                <section class="dashboard-panel relatorios-resumo-panel">
+                    <div class="relatorios-resultado-topo">
+                        <div class="section-title">
+                            <h2 id="total-relatorios">0 OS encontradas</h2>
+                            <p id="descricao-consulta-relatorios"></p>
+                        </div>
+
+                        <div class="relatorios-exportacao">
+                            <fieldset>
+                                <legend>Formato do PDF</legend>
+                                <label><input type="radio" name="formato-relatorio" value="resumido" checked> Resumido</label>
+                                <label><input type="radio" name="formato-relatorio" value="detalhado"> Detalhado</label>
+                            </fieldset>
+                            <button type="button" id="btn-gerar-relatorio-pdf" class="btn-secundario" disabled>
+                                <i class="fa-solid fa-file-arrow-down"></i> Gerar PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="relatorios-resumo-bloco">
+                        <h3>Resumo por status</h3>
+                        <div id="resumo-status-relatorios" class="relatorios-status-resumo"></div>
+                    </div>
+
+                    <div class="relatorios-resumo-bloco">
+                        <h3>Resumo por prioridade</h3>
+                        <div class="relatorios-prioridades-resumo">
+                            <article class="relatorios-indicador prioridade-urgente">
+                                <span>Urgentes</span>
+                                <strong id="total-urgentes-relatorio">0</strong>
+                            </article>
+                            <article class="relatorios-indicador prioridade-normal">
+                                <span>Normais</span>
+                                <strong id="total-normais-relatorio">0</strong>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-panel relatorios-lista-panel">
+                    <div class="section-title">
+                        <h2>Ordens encontradas</h2>
+                        <p>A coluna Data segue a referência selecionada na consulta.</p>
+                    </div>
+
+                    <div class="relatorios-tabela-wrap" tabindex="0" aria-label="Resultados da consulta de ordens de serviço">
+                        <table class="relatorios-tabela">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Número</th>
+                                    <th scope="col">Máquina</th>
+                                    <th scope="col">Setor</th>
+                                    <th scope="col">Prioridade</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col" id="cabecalho-data-relatorio">Data</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-relatorios"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+            </div>
+            <div id="conteudo-resultados-estoque" hidden>
+                <section id="resultado-retiradas" class="dashboard-panel relatorios-lista-panel" hidden>
+                    <div class="relatorios-resultado-topo">
+                        <div class="section-title"><h2>Retiradas encontradas</h2><p id="descricao-retiradas"></p></div>
+                        <button type="button" id="btn-gerar-retiradas-pdf" class="btn-secundario" disabled title="Exportar todos os registros dos filtros consultados"><i class="fa-solid fa-file-arrow-down"></i> Gerar PDF</button>
+                    </div>
+                    <div class="relatorios-tabela-wrap" tabindex="0" aria-label="Resultados da consulta de retiradas do estoque">
+                        <table class="relatorios-tabela"><thead><tr><th scope="col">Produto</th><th scope="col">Quantidade</th><th scope="col">Registrado por</th><th scope="col">Recebido por</th><th scope="col">Data e horário</th><th scope="col">Situação</th></tr></thead><tbody id="lista-retiradas"></tbody></table>
+                    </div>
+                    <div class="relatorios-paginacao" id="paginacao-retiradas" hidden><button type="button" id="retiradas-anterior" class="btn-secundario">Anterior</button><span id="pagina-retiradas" role="status"></span><button type="button" id="retiradas-proxima" class="btn-secundario">Próxima</button></div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        permitirPagina(["admin", "almoxarifado", "compras"]);
+        ajustarMenuPorPerfil();
+    </script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/os-pdf-download.js"></script>
+    <script src="../js/relatorios.js"></script>
+    <script src="../js/relatorios-estoque.js"></script>
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+    <script src="../js/periodo.js"></script>
+</body>
+</html>

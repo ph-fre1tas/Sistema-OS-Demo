@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Paulo Henrique">
+    <title>Painel do Administrador</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/app-180.png">
+  <meta name="application-name" content="Manutenção - Sistema OS">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Manutenção - Sistema OS">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body class="admin-page">
+    <main class="app-layout">
+        <aside class="sidebar">
+            <button 
+                type="button" 
+                class="btn-fechar-menu" 
+                onclick="fecharMenuMobile()"
+                aria-label="Fechar menu"
+            >
+                &times;
+            </button>
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="../assets/img/logo.png" alt="Logo Sistema OS"></div>
+                <div>
+                    <h2>Administrador</h2>
+                    <p>Sistema de Manutenção</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="criar-os.html" data-perfis="admin,almoxarifado,lider,manutentor">Nova OS</a>
+                <a href="minhas-os.html" data-perfis="lider">Minhas OS</a>
+                <a href="painel-manutentor.html" data-perfis="admin,almoxarifado,manutentor">Painel do Manutentor</a>
+                <a href="estoque.html" data-perfis="admin,almoxarifado,compras">Estoque</a>
+                <a href="pedido-compra.html" data-perfis="admin,almoxarifado,compras">Pedido de Compra</a>
+                <a href="os-concluidas.html" data-perfis="admin,almoxarifado,lider,manutentor">Histórico</a>
+                <a href="relatorios.html" data-perfis="admin,almoxarifado,compras">Relatórios</a>
+                <a href="ferramentas.html" data-perfis="admin,almoxarifado">Ferramentas</a>
+                <a href="cadastros.html" data-perfis="admin,almoxarifado">Cadastros</a>
+                <a href="admin.html" data-perfis="admin" class="ativo">Admin</a>
+                <a href="cadastros.html" data-perfis="manutentor" data-ordem-menu="maquinas">Máquinas</a>
+            </nav>
+
+            <button onclick="sair()" class="btn-sair-sidebar"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </aside>
+
+        <div class="menu-mobile-overlay" onclick="fecharMenuMobile()"></div>
+
+        <section class="app-content">
+            <header class="topbar">
+                <button 
+                    type="button" 
+                    class="btn-menu-mobile" 
+                    onclick="abrirMenuMobile()"
+                    aria-label="Abrir menu"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h1>Painel do Administrador</h1>
+                    <p>Gerencie usuários, perfis e acessos do sistema.</p>
+                </div>
+
+                <div class="topbar-user">
+                    <span><i class="fa-solid fa-user-shield"></i></span>
+                    <div>
+                        <strong>Administrador</strong>
+                        <small>Controle de acesso</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="admin-resumo">
+                <article class="resumo-card">
+                    <span>Total</span>
+                    <strong id="totalUsuarios">0</strong>
+                    <p>Usuários cadastrados</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Admin</span>
+                    <strong id="totalAdmins">0</strong>
+                    <p>Administradores</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Líder</span>
+                    <strong id="totalLideres">0</strong>
+                    <p>Líderes cadastrados</p>
+                </article>
+
+                <article class="resumo-card">
+                    <span>Manutentor</span>
+                    <strong id="totalManutentores">0</strong>
+                    <p>Manutentores</p>
+                </article>
+
+                <article class="resumo-card alerta">
+                    <span>Inativos</span>
+                    <strong id="totalInativos">0</strong>
+                    <p>Usuários bloqueados</p>
+                </article>
+            </section>
+
+            <section class="admin-grid">
+                <section class="admin-panel">
+                    <div class="section-title">
+                        <h2>Criar novo usuário</h2>
+                        <p>Cadastre funcionários e defina o perfil de acesso.</p>
+                    </div>
+
+                    <form id="formUsuario" class="admin-form">
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input type="text" id="nome" required placeholder="Nome do funcionário">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="usuario">Usuário/Login</label>
+                            <input type="text" id="usuario" required placeholder="Ex: joao.silva">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" maxlength="254" placeholder="Opcional">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" required placeholder="Senha inicial">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="perfil">Perfil</label>
+                            <select id="perfil" required>
+                                <option value="">Selecione</option>
+                                <option value="admin">Admin</option>
+                                <option value="lider">Líder</option>
+                                <option value="manutentor">Manutentor</option>
+                                <option value="compras">Compras</option>
+                                <option value="almoxarifado">Almoxarifado</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-principal">Criar usuário</button>
+                    </form>
+
+                    <p id="mensagem" class="mensagem-admin"></p>
+                </section>
+
+                <section class="admin-panel">
+                    <div class="section-title">
+                        <h2>Usuários cadastrados</h2>
+                        <p>Altere perfis, senhas e status dos usuários.</p>
+                    </div>
+
+                    <div id="listaUsuarios" class="usuarios-lista admin-lista-usuarios">
+                        <p>Carregando usuários...</p>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        permitirPagina(["admin"]);
+        ajustarMenuPorPerfil();
+    </script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/admin.js"></script>
+
+    <script defer src="https://kit.fontawesome.com/70b94fa0ad.js" crossorigin="anonymous"></script>
+</body>
+</html>
